@@ -1,4 +1,4 @@
-"""Shared test fixtures for Khazad."""
+"""Shared test fixtures for SemantiCache."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ import json
 import pytest
 
 from semanticache._models import CacheScope
-from semanticache.semanticache import Khazad
+from semanticache.semanticache import SemantiCache
 from semanticache.ports.embedder import Embedder
 from semanticache.ports.store import VectorStore
 
@@ -291,14 +291,14 @@ def gemini_chat_response() -> bytes:
 
 @pytest.fixture
 def make_engine(fake_embedder, memory_store):
-    """Factory fixture to create a Khazad instance with fake deps."""
+    """Factory fixture to create a SemantiCache instance with fake deps."""
 
     def _make(
         threshold: float = 0.90,
         ttl: int | None = None,
         cache_scope: CacheScope | str = CacheScope.MODEL,
-    ) -> Khazad:
-        return Khazad(
+    ) -> SemantiCache:
+        return SemantiCache(
             threshold=threshold,
             ttl=ttl,
             cache_scope=cache_scope,

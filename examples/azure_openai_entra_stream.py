@@ -1,7 +1,7 @@
 """
 Run from the repo root:
 > uv run --group examples python -P examples/azure_openai_entra_stream.py
--P (safe path) stops the cwd from shadowing the installed `khazad` package.
+-P (safe path) stops the cwd from shadowing the installed `semanticache` package.
 """
 import os
 import time
@@ -9,9 +9,9 @@ import time
 from azure.identity import DefaultAzureCredential, get_bearer_token_provider
 from openai import AzureOpenAI
 
-from semanticache import CacheScope, Khazad
+from semanticache import CacheScope, SemantiCache
 
-cache = Khazad(
+cache = SemantiCache(
     redis_url="redis://localhost:6379",
     threshold=0.90,
     cache_scope=CacheScope.HOST,

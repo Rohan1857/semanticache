@@ -1,6 +1,6 @@
 """Example of excluding gemini api call using the ``hosts`` parameter.
 
-Khazad only intercepts traffic to hosts in the ``hosts`` allowlist. Here the
+SemantiCache only intercepts traffic to hosts in the ``hosts`` allowlist. Here the
 allowlist contains only ``api.openai.com``, so Gemini's host
 (``generativelanguage.googleapis.com``) is *not* covered: every request passes
 straight through to the API untouched.
@@ -16,9 +16,9 @@ import time
 
 from google import genai
 
-from semanticache import Khazad
+from semanticache import SemantiCache
 
-cache = Khazad(
+cache = SemantiCache(
     redis_url="redis://localhost:6379",
     threshold=0.90,
     hosts=["api.openai.com"],

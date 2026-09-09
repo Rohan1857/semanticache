@@ -3,9 +3,9 @@ import time
 
 from google import genai
 
-from semanticache import Khazad
+from semanticache import SemantiCache
 
-cache = Khazad(redis_url="redis://localhost:6379", threshold=0.90)
+cache = SemantiCache(redis_url="redis://localhost:6379", threshold=0.90)
 client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
 
 for i in range(2):

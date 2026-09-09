@@ -12,7 +12,7 @@ Usage::
     semanticache.stop()
 
     # Or manage the instance explicitly
-    from semanticache import Khazad
+    from semanticache import SemantiCache
     cache = SemantiCache(redis_url="redis://localhost:6379", threshold=0.92)
     cache.stop()
 """
@@ -23,14 +23,14 @@ import logging
 from typing import Literal
 
 from semanticache._models import CacheHit, CacheScope, ParsedRequest, Stats
-from semanticache.semanticache import SemantiCache, Khazad
+from semanticache.semanticache import SemantiCache, SemantiCache
 
 __version__ = "0.1.3"
 __all__ = [
     "CacheHit",
     "CacheScope",
     "SemantiCache",
-    "Khazad",
+    "SemantiCache",
     "ParsedRequest",
     "Stats",
     "flush",
@@ -41,7 +41,7 @@ __all__ = [
 ]
 
 # ---------------------------------------------------------------------------
-# Module-level singleton — functional interface over a single Khazad instance
+# Module-level singleton — functional interface over a single SemantiCache instance
 # ---------------------------------------------------------------------------
 
 _instance: SemantiCache | None = None
@@ -58,7 +58,7 @@ def init(
     hosts: list[str] | None = None,
     cache_scope: CacheScope | Literal["model", "host"] = CacheScope.MODEL,
 ) -> None:
-    """Activate the global Khazad singleton."""
+    """Activate the global SemantiCache singleton."""
     global _instance
 
     if _instance is not None and _instance.is_active():
@@ -79,7 +79,7 @@ def init(
 
 
 def stop() -> None:
-    """Deactivate the global Khazad singleton."""
+    """Deactivate the global SemantiCache singleton."""
     global _instance
 
     if _instance is None or not _instance.is_active():
@@ -106,5 +106,5 @@ def flush() -> None:
 
 
 def is_active() -> bool:
-    """Return True if Khazad is currently intercepting HTTP traffic."""
+    """Return True if SemantiCache is currently intercepting HTTP traffic."""
     return _instance is not None and _instance.is_active()

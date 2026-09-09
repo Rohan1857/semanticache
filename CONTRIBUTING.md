@@ -1,6 +1,6 @@
 # Contributing
 
-Khazad changes should be tested against the failure mode they can realistically
+SemantiCache changes should be tested against the failure mode they can realistically
 affect. The project has two regression tracks: correctness and concurrency.
 Please include the commands you ran, the Python version, the provider SDK and
 endpoint, and any notable failures in the PR or commit notes.
@@ -58,7 +58,7 @@ What they cover:
 - `tests/integration/` (providers): full interception lifecycle per provider with
   `httpx.MockTransport`. This is the best check for transport and end-to-end changes.
 
-New behavior needs new tests. For tests, `Khazad` accepts `_vector_store` and
+New behavior needs new tests. For tests, `SemantiCache` accepts `_vector_store` and
 `_embedder_instance` keyword args (both or neither) to inject the fakes from
 `tests/conftest.py` and bypass Redis/transport patching.
 
@@ -74,9 +74,9 @@ uv run python -m ruff format .
 
 The non-negotiable architecture rules (full picture in `AGENT.md`):
 
-1. **One entry point.** All cache logic lives in the `Khazad` class — no separate
+1. **One entry point.** All cache logic lives in the `SemantiCache` class — no separate
    engine, orchestrator, or config object.
-2. **No pydantic.** Validation is inline in `Khazad.__init__`; plain dataclasses for models.
+2. **No pydantic.** Validation is inline in `SemantiCache.__init__`; plain dataclasses for models.
 3. **Ports & Adapters.** New providers implement `ProviderParser`
    (`semanticache/ports/parser.py`); new backends implement `VectorStore`; new embedders
    implement `Embedder`. Adapters never import other adapters.

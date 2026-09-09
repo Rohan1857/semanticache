@@ -16,7 +16,7 @@ import pytest
 
 from semanticache._transport import install, uninstall
 from semanticache.adapters.parsers.openai import OpenAIParser
-from semanticache.semanticache import Khazad
+from semanticache.semanticache import SemantiCache
 
 CHAT_URL = "https://api.openai.com/v1/chat/completions"
 
@@ -29,7 +29,7 @@ def _cleanup():
 
 @pytest.fixture
 def engine(fake_embedder, memory_store):
-    return Khazad(
+    return SemantiCache(
         threshold=0.99,
         _vector_store=memory_store,
         _embedder_instance=fake_embedder,

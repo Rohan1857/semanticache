@@ -1,4 +1,4 @@
-"""Khazad — the single class for transparent semantic caching of LLM API calls."""
+"""SemantiCache — the single class for transparent semantic caching of LLM API calls."""
 
 from __future__ import annotations
 
@@ -42,10 +42,10 @@ class SemantiCache:
     """Transparent semantic cache for LLM API calls.
 
     Instantiating this class activates the HTTP transport patch and wires all
-    internal components. Use :func:`khazad.init` for the module-level singleton
-    API, or create a ``Khazad`` instance directly for explicit lifecycle control::
+    internal components. Use :func:`semanticache.init` for the module-level singleton
+    API, or create a ``SemantiCache`` instance directly for explicit lifecycle control::
 
-        cache = Khazad(redis_url="redis://localhost:6379", threshold=0.92)
+        cache = SemantiCache(redis_url="redis://localhost:6379", threshold=0.92)
         # ... run your app ...
         cache.stop()
 
@@ -121,7 +121,7 @@ class SemantiCache:
     # ------------------------------------------------------------------
 
     def stop(self) -> None:
-        """Deactivate Khazad — restores original HTTP transports."""
+        """Deactivate SemantiCache — restores original HTTP transports."""
         if not self._active:
             self.logger.warning("[SemantiCache] Not currently active")
             return
@@ -291,4 +291,4 @@ class SemantiCache:
 
 
 # Backwards compatibility alias
-Khazad = SemantiCache
+SemantiCache = SemantiCache

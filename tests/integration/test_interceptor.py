@@ -16,13 +16,13 @@ import httpx
 import pytest
 
 from semanticache._transport import install, uninstall
-from semanticache.semanticache import Khazad
+from semanticache.semanticache import SemantiCache
 
 
 @pytest.fixture
 def engine(fake_embedder, memory_store):
-    """Create a Khazad instance with in-memory backends."""
-    return Khazad(
+    """Create a SemantiCache instance with in-memory backends."""
+    return SemantiCache(
         threshold=0.99,
         _vector_store=memory_store,
         _embedder_instance=fake_embedder,

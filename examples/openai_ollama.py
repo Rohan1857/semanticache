@@ -4,15 +4,15 @@ Start it with `ollama serve` and pull a model with e.g. `ollama pull llama3`.
 
 Run from the repo root:
 > uv run --group examples python -P examples/openai_ollama.py
--P (safe path) stops the cwd from shadowing the installed `khazad` package.
+-P (safe path) stops the cwd from shadowing the installed `semanticache` package.
 """
 import time
 
 from openai import OpenAI
 
-from semanticache import Khazad
+from semanticache import SemantiCache
 
-cache = Khazad(redis_url="redis://localhost:6379", threshold=0.90, namespace="ollama_example")
+cache = SemantiCache(redis_url="redis://localhost:6379", threshold=0.90, namespace="ollama_example")
 
 client = OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")
 model = "llama3"

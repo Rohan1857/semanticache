@@ -11,7 +11,7 @@ import httpx
 if TYPE_CHECKING:
     from collections.abc import Callable, Iterator
 
-    from semanticache.semanticache import Khazad, PreparedRequest
+    from semanticache.semanticache import SemantiCache, PreparedRequest
 
 logger = logging.getLogger("semanticache")
 
@@ -23,8 +23,8 @@ _original_async_init = None
 _original_sync_init = None
 
 
-def install(cache: Khazad) -> None:
-    """Monkey-patch httpx.Client and httpx.AsyncClient to use Khazad transports.
+def install(cache: SemantiCache) -> None:
+    """Monkey-patch httpx.Client and httpx.AsyncClient to use SemantiCache transports.
 
     Safe to call repeatedly: only the *first* install captures the pristine
     ``__init__`` references. Subsequent calls swap in a new cache without
@@ -77,7 +77,7 @@ def uninstall() -> None:
 class CachedSyncTransport(httpx.BaseTransport):
     """Sync httpx transport that intercepts LLM requests for caching."""
 
-    def __init__(self, cache: Khazad, wrapped: httpx.BaseTransport) -> None:
+    def __init__(self, cache: SemantiCache, wrapped: httpx.BaseTransport) -> None:
         self._cache = cache
         self._wrapped = wrapped
 
@@ -117,7 +117,7 @@ class CachedSyncTransport(httpx.BaseTransport):
 class CachedAsyncTransport(httpx.AsyncBaseTransport):
     """Async httpx transport that intercepts LLM requests for caching."""
 
-    def __init__(self, cache: Khazad, wrapped: httpx.AsyncBaseTransport) -> None:
+    def __init__(self, cache: SemantiCache, wrapped: httpx.AsyncBaseTransport) -> None:
         self._cache = cache
         self._wrapped = wrapped
 
@@ -172,7 +172,7 @@ def _replay(prepared: PreparedRequest, hit) -> httpx.Response:
     return prepared.parser.build_response(hit.response_data)
 
 
-def _store_stream(cache: Khazad, prepared: PreparedRequest, raw: bytes) -> None:
+def _store_stream(cache: SemantiCache, prepared: PreparedRequest, raw: bytes) -> None:
     """Reconstruct a canonical JSON response from raw SSE bytes and cache it."""
     body = prepared.parser.response_from_stream(raw)
     if body:

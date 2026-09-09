@@ -1,6 +1,6 @@
 """Show that the cache key includes the system prompt, not just user turns.
 
-Khazad embeds the full conversation -> system + all role:text lines, so a
+SemantiCache embeds the full conversation -> system + all role:text lines, so a
 different system prompt with the same user question is a different cache entry.
 Calls 1 and 2 share the "concise" system prompt: MISS then HIT. Call 3 swaps in
 a different system prompt, which embeds sufficiently far away to drop below the
@@ -9,7 +9,7 @@ never cross-serves.
 
 Run from the repo root:
 > uv run --group examples python -P examples/anthropic_system.py
--P (safe path) stops the cwd from shadowing the installed `khazad` package.
+-P (safe path) stops the cwd from shadowing the installed `semanticache` package.
 """
 
 import os
@@ -17,9 +17,9 @@ import time
 
 from anthropic import Anthropic
 
-from semanticache import Khazad
+from semanticache import SemantiCache
 
-cache = Khazad(
+cache = SemantiCache(
     redis_url="redis://localhost:6379",
     threshold=0.95,
     namespace="anthropic_system_example",

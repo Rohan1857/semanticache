@@ -1,4 +1,4 @@
-"""Unit tests for the Khazad cache operations."""
+"""Unit tests for the SemantiCache cache operations."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ import httpx
 import pytest
 
 from semanticache._models import CacheScope
-from semanticache.semanticache import Khazad
+from semanticache.semanticache import SemantiCache
 
 OPENAI_URL = "https://api.openai.com/v1/chat/completions"
 
@@ -17,13 +17,13 @@ class TestKeyGeneration:
     """Verify deterministic key derivation."""
 
     def test_same_text_same_key(self):
-        assert Khazad._make_key("Hello world") == Khazad._make_key("Hello world")
+        assert SemantiCache._make_key("Hello world") == SemantiCache._make_key("Hello world")
 
     def test_different_text_different_key(self):
-        assert Khazad._make_key("Hello world") != Khazad._make_key("Goodbye world")
+        assert SemantiCache._make_key("Hello world") != SemantiCache._make_key("Goodbye world")
 
     def test_key_length(self):
-        assert len(Khazad._make_key("test")) == 32
+        assert len(SemantiCache._make_key("test")) == 32
 
 
 class TestPrepare:
@@ -89,7 +89,7 @@ class TestHostAllowlist:
     """Verify the opt-in hosts allowlist."""
 
     def _engine(self, fake_embedder, memory_store, hosts):
-        return Khazad(hosts=hosts, _vector_store=memory_store, _embedder_instance=fake_embedder)
+        return SemantiCache(hosts=hosts, _vector_store=memory_store, _embedder_instance=fake_embedder)
 
     def test_allowed_host_is_prepared(self, fake_embedder, memory_store, openai_chat_body):
         engine = self._engine(fake_embedder, memory_store, ["api.openai.com"])
@@ -243,7 +243,7 @@ class TestEmbeddingReuse:
             return original(text)
 
         fake_embedder.embed = counting_embed
-        engine = Khazad(
+        engine = SemantiCache(
             threshold=0.9, _vector_store=memory_store, _embedder_instance=fake_embedder
         )
         req = httpx.Request("POST", OPENAI_URL, content=openai_chat_body)

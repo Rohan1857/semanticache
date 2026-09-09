@@ -6,7 +6,7 @@ import httpx
 import pytest
 
 from semanticache._transport import install, uninstall
-from semanticache.semanticache import Khazad
+from semanticache.semanticache import SemantiCache
 
 
 @pytest.fixture(autouse=True)
@@ -17,7 +17,7 @@ def _cleanup():
 
 @pytest.fixture
 def engine(fake_embedder, memory_store):
-    return Khazad(
+    return SemantiCache(
         threshold=0.99,
         _vector_store=memory_store,
         _embedder_instance=fake_embedder,

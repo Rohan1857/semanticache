@@ -1,14 +1,14 @@
-"""Unit tests for Khazad initialization validation."""
+"""Unit tests for SemantiCache initialization validation."""
 
 from __future__ import annotations
 
 import pytest
 
 from semanticache._models import CacheScope
-from semanticache.semanticache import Khazad
+from semanticache.semanticache import SemantiCache
 
 
-# Minimal fakes to construct Khazad without Redis
+# Minimal fakes to construct SemantiCache without Redis
 class _FakeEmbedder:
     def embed(self, text):
         return [0.0]
@@ -38,17 +38,17 @@ class _FakeStore:
         pass
 
 
-def _make(**kwargs) -> Khazad:
+def _make(**kwargs) -> SemantiCache:
     defaults = {
         "_vector_store": _FakeStore(),
         "_embedder_instance": _FakeEmbedder(),
     }
     defaults.update(kwargs)
-    return Khazad(**defaults)
+    return SemantiCache(**defaults)
 
 
-class TestKhazadDefaults:
-    """Verify default values when creating a Khazad instance."""
+class TestsemanticacheDefaults:
+    """Verify default values when creating a SemantiCache instance."""
 
     def test_default_threshold(self):
         k = _make()
@@ -63,7 +63,7 @@ class TestKhazadDefaults:
         assert k._cache_scope is CacheScope.MODEL
 
 
-class TestKhazadValidation:
+class TestsemanticacheValidation:
     """Verify initialization validation rules."""
 
     def test_threshold_must_be_between_0_and_1(self):

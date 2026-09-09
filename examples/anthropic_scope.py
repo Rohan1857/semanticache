@@ -1,6 +1,6 @@
 """Share one cache across two Anthropic models with cache_scope=HOST.
 
-By default Khazad scopes the cache to host+model, so claude-haiku and
+By default SemantiCache scopes the cache to host+model, so claude-haiku and
 claude-sonnet never share entries. With cache_scope=CacheScope.HOST the model
 is dropped from the scope: the MISS stored against haiku is replayed as a HIT
 for sonnet, because both deployments speak the same Anthropic wire format.
@@ -9,7 +9,7 @@ Call 1 (haiku) is a MISS; call 2 (sonnet) is a HIT served from the haiku entry.
 
 Run from the repo root:
 > uv run --group examples python -P examples/anthropic_scope.py
--P (safe path) stops the cwd from shadowing the installed `khazad` package.
+-P (safe path) stops the cwd from shadowing the installed `semanticache` package.
 """
 
 import os
@@ -17,9 +17,9 @@ import time
 
 from anthropic import Anthropic
 
-from semanticache import CacheScope, Khazad
+from semanticache import CacheScope, SemantiCache
 
-cache = Khazad(
+cache = SemantiCache(
     redis_url="redis://localhost:6379",
     threshold=0.90,
     cache_scope=CacheScope.HOST,
