@@ -1,0 +1,104 @@
+[project]
+name = "semanticache"
+dynamic = ["version"]
+description = "High-performance, transport-layer semantic vector cache for LLM API calls using Redis 8 Vector Sets"
+readme = "README.md"
+license = "MIT"
+authors = [
+    { name = "Rohan", email = "rohan.185712@gmail.com" }
+]
+requires-python = ">=3.10"
+keywords = ["llm", "cache", "semantic-cache", "redis", "vector", "openai", "anthropic", "gemini", "fastapi"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "redis>=8.0.0,<9",
+    "httpx>=0.27.0",
+    "sentence-transformers>=3.0.0",
+]
+
+[project.optional-dependencies]
+openai-embeddings = ["openai>=1.0.0"]
+
+[project.urls]
+Homepage = "https://github.com/Rohan1857/semanticache"
+Repository = "https://github.com/Rohan1857/semanticache"
+Issues = "https://github.com/Rohan1857/semanticache/issues"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.24.0",
+    "pytest-cov>=6.0.0",
+    "ruff>=0.8.0",
+]
+examples = [
+    "openai>=1.0.0",
+    "anthropic>=0.40.0",
+    "google-genai>=1.0.0",
+    "azure-identity>=1.19.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = "semanticache/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["semanticache"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 99
+
+[tool.ruff.lint]
+select = [
+    "E", "W", "F", "I", "N", "UP", "B", "SIM", "TCH", "RUF", "PT", "RET", "C4", "PIE"
+]
+ignore = ["E501"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["semanticache"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = [
+    "B011", "PT011", "PT004", "PT012"
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+markers = [
+    'integration: marks tests requiring Redis (deselect with "-m not integration")',
+    'stress: marks stress/performance tests (deselect with "-m not stress")',
+]
+
+[tool.coverage.run]
+source = ["semanticache"]
+branch = true
+omit = ["tests/*"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "raise NotImplementedError",
+    "if TYPE_CHECKING:",
+    "@abstractmethod",
+]
+show_missing = true
+skip_covered = false
