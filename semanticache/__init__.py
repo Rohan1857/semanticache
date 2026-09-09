@@ -8,8 +8,8 @@ Usage::
 
     # Functional singleton API
     import semanticache
-    khazad.init(redis_url="redis://localhost:6379", threshold=0.92)
-    khazad.stop()
+    semanticache.init(redis_url="redis://localhost:6379", threshold=0.92)
+    semanticache.stop()
 
     # Or manage the instance explicitly
     from semanticache import Khazad

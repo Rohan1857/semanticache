@@ -8,7 +8,7 @@ import httpx
 import pytest
 
 from semanticache._models import CacheScope
-from semanticache.khazad import Khazad
+from semanticache.semanticache import Khazad
 
 OPENAI_URL = "https://api.openai.com/v1/chat/completions"
 

@@ -8,7 +8,7 @@ import json
 import pytest
 
 from semanticache._models import CacheScope
-from semanticache.khazad import Khazad
+from semanticache.semanticache import Khazad
 from semanticache.ports.embedder import Embedder
 from semanticache.ports.store import VectorStore
 

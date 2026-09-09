@@ -16,7 +16,7 @@ import pytest
 
 from semanticache._transport import install, uninstall
 from semanticache.adapters.parsers.openai import OpenAIParser
-from semanticache.khazad import Khazad
+from semanticache.semanticache import Khazad
 
 CHAT_URL = "https://api.openai.com/v1/chat/completions"
 

@@ -5,7 +5,7 @@ from __future__ import annotations
 import pytest
 
 from semanticache._models import CacheScope
-from semanticache.khazad import Khazad
+from semanticache.semanticache import Khazad
 
 
 # Minimal fakes to construct Khazad without Redis

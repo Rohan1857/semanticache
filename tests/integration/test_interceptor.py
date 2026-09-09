@@ -16,7 +16,7 @@ import httpx
 import pytest
 
 from semanticache._transport import install, uninstall
-from semanticache.khazad import Khazad
+from semanticache.semanticache import Khazad
 
 
 @pytest.fixture

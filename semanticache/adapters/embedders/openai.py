@@ -34,7 +34,7 @@ class OpenAIEmbedder(Embedder):
                 from openai import OpenAI
             except ImportError as exc:
                 raise ImportError(
-                    "Install the 'openai' package: pip install khazad[openai-embeddings]"
+                    "Install the 'openai' package: pip install semanticache[openai-embeddings]"
                 ) from exc
             self._client = OpenAI(api_key=self._api_key)
         return self._client
