@@ -7,14 +7,13 @@ import logging
 import threading
 import time
 from dataclasses import dataclass, field
-from typing import TYPE_CHECKING, Any, Literal
+from typing import TYPE_CHECKING, Literal
 
 from semanticache._models import CacheHit, CacheScope, Stats
 from semanticache.adapters.parsers.anthropic import AnthropicParser
 from semanticache.adapters.parsers.gemini import GeminiParser
 from semanticache.adapters.parsers.openai import OpenAIParser
 from semanticache.adapters.parsers.openai_responses import OpenAIResponsesParser
-from semanticache.context import get_context
 
 if TYPE_CHECKING:
     import httpx
@@ -189,10 +188,7 @@ class SemantiCache:
             self._stats.total_requests += 1
 
         start = time.perf_counter()
-        metadata = get_context()
-        result = self._store.search(
-            prepared.scope, self._embed(prepared), self._threshold, metadata=metadata
-        )
+        result = self._store.search(prepared.scope, self._embed(prepared), self._threshold)
 
         if result is not None:
             key, similarity = result
@@ -221,11 +217,8 @@ class SemantiCache:
 
     def store(self, prepared: PreparedRequest, response_data: bytes) -> None:
         """Cache a response for future semantic lookups."""
-        metadata = get_context()
-        key = self._make_key(f"{prepared.scope}:{prepared.prompt}", metadata=metadata)
-        self._store.store(
-            prepared.scope, key, self._embed(prepared), response_data, ttl=self._ttl, metadata=metadata
-        )
+        key = self._make_key(f"{prepared.scope}:{prepared.prompt}")
+        self._store.store(prepared.scope, key, self._embed(prepared), response_data, ttl=self._ttl)
         self.logger.debug("[SemantiCache] Stored response under key %s", key)
 
     # ------------------------------------------------------------------
@@ -251,13 +244,8 @@ class SemantiCache:
         return prepared.embedding
 
     @staticmethod
-    def _make_key(text: str, metadata: dict[str, Any] | None = None) -> str:
-        """Derive a deterministic cache key from scoped prompt text and optional metadata."""
-        if metadata:
-            # Sort metadata to ensure deterministic key generation
-            sorted_meta = sorted(metadata.items())
-            meta_str = str(sorted_meta)
-            text = f"{text}:{meta_str}"
+    def _make_key(text: str) -> str:
+        """Derive a deterministic cache key from scoped prompt text."""
         return hashlib.sha256(text.encode()).hexdigest()[:32]
 
     def _activate(

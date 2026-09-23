@@ -4,14 +4,13 @@ from __future__ import annotations
 
 import hashlib
 import json
-from typing import Any
 
 import pytest
 
 from semanticache._models import CacheScope
+from semanticache.semanticache import SemantiCache
 from semanticache.ports.embedder import Embedder
 from semanticache.ports.store import VectorStore
-from semanticache.semanticache import SemantiCache
 
 # ---------------------------------------------------------------------------
 # Fake Embedder
@@ -49,7 +48,7 @@ class InMemoryVectorStore(VectorStore):
         self._responses: dict[str, bytes] = {}
 
     def search(
-        self, scope: str, embedding: list[float], threshold: float, metadata: dict[str, Any] | None = None
+        self, scope: str, embedding: list[float], threshold: float
     ) -> tuple[str, float] | None:
         best_key: str | None = None
         best_sim = -1.0
@@ -69,7 +68,6 @@ class InMemoryVectorStore(VectorStore):
         embedding: list[float],
         response_data: bytes,
         ttl: int | None = None,
-        metadata: dict[str, Any] | None = None,
     ) -> None:
         self._vectors.setdefault(scope, {})[key] = embedding
         self._responses[key] = response_data

@@ -11,7 +11,7 @@ import httpx
 if TYPE_CHECKING:
     from collections.abc import Callable, Iterator
 
-    from semanticache.semanticache import PreparedRequest, SemantiCache
+    from semanticache.semanticache import SemantiCache, PreparedRequest
 
 logger = logging.getLogger("semanticache")
 

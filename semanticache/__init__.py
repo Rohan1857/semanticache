@@ -23,25 +23,20 @@ import logging
 from typing import Literal
 
 from semanticache._models import CacheHit, CacheScope, ParsedRequest, Stats
-from semanticache.context import clear_context, context, get_context, set_context
-from semanticache.semanticache import SemantiCache
+from semanticache.semanticache import SemantiCache, SemantiCache
 
 __version__ = "0.1.3"
 __all__ = [
     "CacheHit",
     "CacheScope",
+    "SemantiCache",
+    "SemantiCache",
     "ParsedRequest",
-    "SemantiCache",
-    "SemantiCache",
     "Stats",
-    "clear_context",
-    "context",
     "flush",
-    "get_context",
     "get_stats",
     "init",
     "is_active",
-    "set_context",
     "stop",
 ]
 

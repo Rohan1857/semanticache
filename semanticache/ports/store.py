@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import Any
 
 
 class VectorStore(ABC):
@@ -16,7 +15,7 @@ class VectorStore(ABC):
 
     @abstractmethod
     def search(
-        self, scope: str, embedding: list[float], threshold: float, metadata: dict[str, Any] | None = None
+        self, scope: str, embedding: list[float], threshold: float
     ) -> tuple[str, float] | None:
         """Search the scope for the nearest vector above the similarity threshold.
 
@@ -31,7 +30,6 @@ class VectorStore(ABC):
         embedding: list[float],
         response_data: bytes,
         ttl: int | None = None,
-        metadata: dict[str, Any] | None = None,
     ) -> None:
         """Store an embedding and its associated response data."""
 
