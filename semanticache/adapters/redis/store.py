@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+from typing import Any
 
 import redis
 
@@ -41,7 +42,7 @@ class RedisVectorStore(VectorStore):
         self._get_client().ping()
 
     def search(
-        self, scope: str, embedding: list[float], threshold: float
+        self, scope: str, embedding: list[float], threshold: float, metadata: dict[str, Any] | None = None
     ) -> tuple[str, float] | None:
         """Search the scope's Vector Set for the nearest neighbor above threshold.
 
@@ -52,16 +53,20 @@ class RedisVectorStore(VectorStore):
         ``_parse_vsim_response`` handles both RESP2 and RESP3 shapes directly.
         """
         try:
-            response = self._get_client().execute_command(
+            cmd = [
                 "VSIM",
                 self._vset_key(scope),
                 "VALUES",
                 len(embedding),
                 *embedding,
-                "WITHSCORES",
-                "COUNT",
-                1,
-            )
+            ]
+            if metadata:
+                cmd.append("TAGS")
+                for k, v in metadata.items():
+                    cmd.extend([str(k), str(v)])
+            cmd.extend(["WITHSCORES", "COUNT", 1])
+
+            response = self._get_client().execute_command(*cmd)
             element, score = _parse_vsim_response(response)
             if element is not None and score >= threshold:
                 return element, score
@@ -77,12 +82,19 @@ class RedisVectorStore(VectorStore):
         embedding: list[float],
         response_data: bytes,
         ttl: int | None = None,
+        metadata: dict[str, Any] | None = None,
     ) -> None:
         """Store the embedding and response body atomically."""
         pipe = self._get_client().pipeline(transaction=False)
-        pipe.execute_command(
+        cmd = [
             "VADD", self._vset_key(scope), "VALUES", len(embedding), *embedding, key
-        )
+        ]
+        if metadata:
+            cmd.append("TAGS")
+            for k, v in metadata.items():
+                cmd.extend([str(k), str(v)])
+
+        pipe.execute_command(*cmd)
         pipe.set(self._resp_key(key), response_data, ex=ttl)
         pipe.execute()
 
